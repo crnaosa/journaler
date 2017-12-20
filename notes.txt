@@ -1,0 +1,4 @@
+Here 
+are some notes
+for the sake of the first Android kotlin app.
+Let's save it now and continue later.
