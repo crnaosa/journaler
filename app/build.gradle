@@ -1,27 +1,82 @@
-apply plugin: 'com.android.application'
-
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-android-extensions"
 android {
     compileSdkVersion 27
+    buildToolsVersion "26.0.2"
     defaultConfig {
-        applicationId "journaler.com.journaler"
-        minSdkVersion 21
+        applicationId "com.journaler"
+        minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner
+        "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            applicationIdSuffix ".dev"
+        }
+        staging {
+            debuggable true
+            applicationIdSuffix ".sta"
+        }
+        preproduction {
+            applicationIdSuffix ".pre"
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions "tier"
+    productFlavors {
+        demo {
+            applicationIdSuffix ".demo"
+            versionNameSuffix "-demo"
+            dimension "tier"
+        }
+        complete {
+            applicationIdSuffix ".complete"
+            versionNameSuffix "-complete"
+            dimension "tier"
+        }
+        special {
+            applicationIdSuffix ".special"
+            versionNameSuffix "-special"
+            dimension "tier"
+        }
+    }
+    sourceSets {
+        main {
+            java.srcDirs = [
+                    'src/main/kotlin',
+                    'src/common/kotlin',
+                    'src/debug/kotlin',
+                    'src/release/kotlin',
+                    'src/staging/kotlin',
+                    'src/preproduction/kotlin',
+                    'src/debug/java',
+                    'src/release/java',
+                    'src/staging/java',
+                    'src/preproduction/java',
+                    'src/androidTest/java',
+                    'src/androidTest/kotlin'
+            ]
+        }
 }
-
+repositories {
+    jcenter()
+    mavenCentral()
+}
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.0.2'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:1.1.51"
+    compile 'com.android.support:design:27.0.2'
+    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.squareup.okhttp3:okhttp:3.9.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+}
 }
